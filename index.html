@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UwU Lottery System</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif; /* UwU font */
+      background-color: #2e1a47; /* Dark purple background */
+      color: #ffccf9; /* Pastel pink text */
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 3rem;
+      background: linear-gradient(45deg, #ff9ff3, #f368e0); /* Pink gradient */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: float 3s ease-in-out infinite; /* Floating animation */
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .number-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 50px);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .number-button {
+      width: 50px;
+      height: 50px;
+      background-color: #ff9ff3; /* Pastel pink */
+      color: #2e1a47; /* Dark purple text */
+      border: none;
+      border-radius: 50%; /* Circular buttons */
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 3D effect */
+    }
+
+    .number-button:hover {
+      background-color: #f368e0; /* Brighter pink on hover */
+      transform: scale(1.1);
+    }
+
+    .number-button.selected {
+      background-color: #ff6b6b; /* Bright red for visibility */
+      border: 3px solid #ff4757; /* Bold border */
+      box-shadow: 0 0 15px rgba(255, 107, 107, 0.7); /* Glow effect */
+      animation: pop 0.3s ease; /* Fun pop animation */
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .number-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .user-input {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .user-input input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ff9ff3;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 200px;
+      background-color: #2e1a47;
+      color: #ffccf9;
+    }
+
+    .user-input button {
+      padding: 10px 20px;
+      background-color: #ff9ff3;
+      color: #2e1a47;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 3D effect */
+    }
+
+    .user-input button:hover {
+      background-color: #f368e0;
+    }
+
+    /* GIGA POGGERS TICKET LIST */
+    .ticket-list {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .ticket-list h2 {
+      font-size: 2rem;
+      background: linear-gradient(45deg, #ff9ff3, #f368e0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .ticket-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .ticket-list li {
+      background-color: #3b2a4f; /* Darker purple */
+      margin: 10px 0;
+      padding: 20px;
+      border-radius: 12px;
+      border-left: 5px solid #ff9ff3;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ticket-list li:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .ticket-list li strong {
+      font-size: 1.2rem;
+      color: #ff9ff3;
+    }
+
+    .ticket-list li span {
+      font-size: 1.1rem;
+      color: #ffccf9;
+      background-color: #2e1a47;
+      padding: 5px 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* UwU Animations */
+    @keyframes uwu {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(5deg);
+      }
+      75% {
+        transform: rotate(-5deg);
+      }
+    }
+
+    .uwu-animate {
+      animation: uwu 1s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Page Title -->
+<h1 class="uwu-animate">UwU Lottery System</h1>
+
+<!-- Number Grid -->
+<div class="number-grid" id="number-grid">
+  <!-- Numbers 1–45 will be generated here -->
+</div>
+
+<!-- User Input -->
+<div class="user-input">
+  <input type="text" id="user_name_input" placeholder="Enter your name UwU">
+  <button onclick="addTicketToList()">Add Ticket (✿◕‿◕)</button>
+</div>
+
+<!-- GIGA POGGERS TICKET LIST -->
+<div class="ticket-list">
+  <h2>Tickets UwU</h2>
+  <ul id="ticket-list">
+    <!-- Tickets will be rendered here -->
+  </ul>
+</div>
+
+<script src="./script.js"></script>
+</body>
+</html>
