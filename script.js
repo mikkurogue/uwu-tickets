@@ -131,13 +131,16 @@ function runRaffle() {
 
   // Slot machine effect
   resultContent.innerHTML = `
-    <div class="slot-machine">
+    <div class="slot-machine" style="background-color: #3b2a4f; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);">
       <span id="slot1" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
       <span id="slot2" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
       <span id="slot3" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
       <span id="slot4" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
       <span id="slot5" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
     </div>
+    <button id="reveal-result-btn" style="margin-top: 20px; padding: 10px 20px; background-color: #ff9ff3; color: #2e1a47; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; display: none;">
+      Reveal Result 🎉
+    </button>
   `;
 
   // Roll the numbers one by one
@@ -148,32 +151,35 @@ function runRaffle() {
     }, index * 1000); // Delay each slot by 1 second
   });
 
-  // After all slots are rolled, show the final result
+  // After all slots are rolled, show the reveal button
   setTimeout(() => {
-    if (winners.length > 0) {
-      // Winner message
-      resultBox.className = "result-box winner";
-      resultContent.innerHTML = `
-        <div>🎉🎉🎉 WE HAVE A WINNER! 🎉🎉🎉</div>
-        <div>Winner: ${winners[0].user} 🏆</div>
-        <div>Winning Numbers: ${raffleNumbers.join(", ")} 🔢</div>
-        <div>Congratulations! 🥳🎊</div>
-      `;
-    } else {
-      // No winner message
-      resultBox.className = "result-box no-winner";
-      resultContent.innerHTML = `
-        <div>😢😢😢 No winner this time! 😢😢😢</div>
-        <div>Womp womp... 💔</div>
-        <div>Better luck next time! 🍀✨</div>
-        <div>Winning Numbers: ${raffleNumbers.join(", ")} 🔢</div>
-      `;
-    }
+    const revealButton = document.getElementById("reveal-result-btn");
+    revealButton.style.display = "block";
+    revealButton.addEventListener("click", () => {
+      if (winners.length > 0) {
+        // Winner message
+        resultBox.className = "result-box winner";
+        resultContent.innerHTML = `
+          <div>🎉🎉🎉 WE HAVE A WINNER! 🎉🎉🎉</div>
+          <div>Winner: ${winners[0].user} 🏆</div>
+          <div>Winning Numbers: ${raffleNumbers.join(", ")} 🔢</div>
+          <div>Congratulations! 🥳🎊</div>
+        `;
+      } else {
+        // No winner message
+        resultBox.className = "result-box no-winner";
+        resultContent.innerHTML = `
+          <div>😢😢😢 No winner this time! 😢😢😢</div>
+          <div>Womp womp... 💔</div>
+          <div>Better luck next time! 🍀✨</div>
+        `;
+      }
 
-    // Clear local storage and reset the ticket list
-    localStorage.removeItem('ticketList');
-    ticketList.length = 0; // Clear the ticket list array
-    renderTicketList(); // Re-render the empty ticket list
+      // Clear local storage and reset the ticket list
+      localStorage.removeItem('ticketList');
+      ticketList.length = 0; // Clear the ticket list array
+      renderTicketList(); // Re-render the empty ticket list
+    });
   }, slots.length * 1000); // Wait for all slots to finish rolling
 }
 
