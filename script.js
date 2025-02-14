@@ -2,7 +2,7 @@
 let selectedNumbers = [];
 const ticketList = [];
 
-// read from local storage and fill ticket list if there are items
+// Read from local storage and fill ticket list if there are items
 localStorage.getItem('ticketList') && JSON.parse(localStorage.getItem('ticketList')).forEach(ticket => {
   ticketList.push(ticket);
   renderTicketList();
@@ -57,7 +57,7 @@ function addTicketToList() {
   document.getElementById("user_name_input").value = "";
   document.getElementById("user_name_input").focus();
 
-  // save the ticket list to local storage
+  // Save the ticket list to local storage
   localStorage.setItem('ticketList', JSON.stringify(ticketList));
 }
 
@@ -77,6 +77,7 @@ function renderTicketList() {
     )
     .join("");
 }
+
 // Clear selected numbers
 function clearSelections() {
   selectedNumbers = [];
@@ -91,7 +92,6 @@ document.getElementById("user_name_input").addEventListener("keydown", (event) =
     addTicketToList();
   }
 });
-
 
 // Raffle number generator and winner checker
 function generateRaffleNumbers() {
@@ -110,7 +110,7 @@ function checkForWinner(raffleNumbers) {
   ticketList.forEach((ticket) => {
     const matchedNumbers = ticket.numbers.filter((num) => raffleNumbers.includes(num));
     if (matchedNumbers.length === 5) {
-      winners.push(ticket.user);
+      winners.push(ticket);
     }
   });
   return winners;
@@ -121,20 +121,53 @@ function runRaffle() {
   const raffleNumbers = generateRaffleNumbers();
   const winners = checkForWinner(raffleNumbers);
 
-  // Display the raffle numbers
-  alert(`Raffle Numbers: ${raffleNumbers.join(", ")}`);
+  // Display the result in the result box
+  const resultBox = document.getElementById("result-box");
+  const overlay = document.getElementById("overlay");
+  const resultContent = document.getElementById("result-content");
 
-  // Display the winners (if any)
+  resultBox.style.display = "block";
+  overlay.style.display = "block";
+
   if (winners.length > 0) {
-    alert(`Winners: ${winners.join(", ")}`);
+    // Winner message
+    resultBox.className = "result-box winner";
+    resultContent.innerHTML = `
+      <div>🎉🎉🎉 WE HAVE A WINNER! 🎉🎉🎉</div>
+      <div>Winner: ${winners[0].user} 🏆</div>
+      <div>Winning Numbers: ${winners[0].numbers.join(", ")} 🔢</div>
+      <div>Congratulations! 🥳🎊</div>
+    `;
   } else {
-    alert("No winners this time! Better luck next time!");
+    // No winner message
+    resultBox.className = "result-box no-winner";
+    resultContent.innerHTML = `
+      <div>😢😢😢 No winner this time! 😢😢😢</div>
+      <div>Womp womp... 💔</div>
+      <div>Better luck next time! 🍀✨</div>
+    `;
   }
+
   // Clear local storage and reset the ticket list
   localStorage.removeItem('ticketList');
   ticketList.length = 0; // Clear the ticket list array
   renderTicketList(); // Re-render the empty ticket list
 }
+
+// Close result box
+function closeResultBox() {
+  const resultBox = document.getElementById("result-box");
+  const overlay = document.getElementById("overlay");
+  resultBox.style.display = "none";
+  overlay.style.display = "none";
+}
+
+// Close result box on Escape key press
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeResultBox();
+  }
+});
 
 // Add a button to run the raffle
 const raffleButton = document.createElement("button");
