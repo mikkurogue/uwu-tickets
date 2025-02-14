@@ -129,30 +129,68 @@ function runRaffle() {
   resultBox.style.display = "block";
   overlay.style.display = "block";
 
-  if (winners.length > 0) {
-    // Winner message
-    resultBox.className = "result-box winner";
-    resultContent.innerHTML = `
-      <div>🎉🎉🎉 WE HAVE A WINNER! 🎉🎉🎉</div>
-      <div>Winner: ${winners[0].user} 🏆</div>
-      <div>Winning Numbers: ${winners[0].numbers.join(", ")} 🔢</div>
-      <div>Congratulations! 🥳🎊</div>
-    `;
-  } else {
-    // No winner message
-    resultBox.className = "result-box no-winner";
-    resultContent.innerHTML = `
-      <div>😢😢😢 No winner this time! 😢😢😢</div>
-      <div>Womp womp... 💔</div>
-      <div>Better luck next time! 🍀✨</div>
-      <div>Winning Numbers: ${raffleNumbers.join(", ")} 🔢</div>
-    `;
-  }
+  // Slot machine effect
+  resultContent.innerHTML = `
+    <div class="slot-machine">
+      <span id="slot1" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
+      <span id="slot2" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
+      <span id="slot3" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
+      <span id="slot4" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
+      <span id="slot5" style="background-color: #ff6b6b; color: #ffffff; border-radius: 10px; padding: 10px; font-size: 1.5rem;">?</span>
+    </div>
+  `;
 
-  // Clear local storage and reset the ticket list
-  localStorage.removeItem('ticketList');
-  ticketList.length = 0; // Clear the ticket list array
-  renderTicketList(); // Re-render the empty ticket list
+  // Roll the numbers one by one
+  const slots = ["slot1", "slot2", "slot3", "slot4", "slot5"];
+  slots.forEach((slotId, index) => {
+    setTimeout(() => {
+      rollSlot(slotId, raffleNumbers[index]);
+    }, index * 1000); // Delay each slot by 1 second
+  });
+
+  // After all slots are rolled, show the final result
+  setTimeout(() => {
+    if (winners.length > 0) {
+      // Winner message
+      resultBox.className = "result-box winner";
+      resultContent.innerHTML = `
+        <div>🎉🎉🎉 WE HAVE A WINNER! 🎉🎉🎉</div>
+        <div>Winner: ${winners[0].user} 🏆</div>
+        <div>Winning Numbers: ${raffleNumbers.join(", ")} 🔢</div>
+        <div>Congratulations! 🥳🎊</div>
+      `;
+    } else {
+      // No winner message
+      resultBox.className = "result-box no-winner";
+      resultContent.innerHTML = `
+        <div>😢😢😢 No winner this time! 😢😢😢</div>
+        <div>Womp womp... 💔</div>
+        <div>Better luck next time! 🍀✨</div>
+        <div>Winning Numbers: ${raffleNumbers.join(", ")} 🔢</div>
+      `;
+    }
+
+    // Clear local storage and reset the ticket list
+    localStorage.removeItem('ticketList');
+    ticketList.length = 0; // Clear the ticket list array
+    renderTicketList(); // Re-render the empty ticket list
+  }, slots.length * 1000); // Wait for all slots to finish rolling
+}
+
+// Roll a single slot
+function rollSlot(slotId, finalNumber) {
+  const slot = document.getElementById(slotId);
+  let currentNumber = 1;
+  const interval = setInterval(() => {
+    slot.textContent = currentNumber;
+    currentNumber = (currentNumber % 45) + 1; // Cycle through numbers 1–45
+  }, 100); // Update every 100ms
+
+  // Stop rolling after 1 second and set the final number
+  setTimeout(() => {
+    clearInterval(interval);
+    slot.textContent = finalNumber;
+  }, 1000);
 }
 
 // Close result box
