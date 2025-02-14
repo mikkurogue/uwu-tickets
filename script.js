@@ -145,6 +145,7 @@ function runRaffle() {
       <div>😢😢😢 No winner this time! 😢😢😢</div>
       <div>Womp womp... 💔</div>
       <div>Better luck next time! 🍀✨</div>
+      <div>Winning Numbers: ${raffleNumbers.join(", ")} 🔢</div>
     `;
   }
 
