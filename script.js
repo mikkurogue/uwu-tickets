@@ -76,6 +76,8 @@ function renderTicketList() {
     `
     )
     .join("");
+
+  document.getElementById("total_sold_tickets").innerHTML = ticketList.length;
 }
 
 // Clear selected numbers

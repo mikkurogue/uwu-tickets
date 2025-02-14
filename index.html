@@ -12,9 +12,6 @@
       color: #ffccf9; /* Pastel pink text */
       margin: 0;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       min-height: 100vh;
     }
 
@@ -24,6 +21,8 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: float 3s ease-in-out infinite; /* Floating animation */
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     @keyframes float {
@@ -35,7 +34,25 @@
       }
     }
 
-    /* Number Grid */
+    /* Grid Layout */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* 2 columns */
+      gap: 20px; /* Space between columns */
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 80vh; /* Set a fixed height for the container */
+    }
+
+    /* Left Column: Lottery Number Selection */
+    .left-column {
+      background-color: #3b2a4f; /* Darker purple */
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      height: fit-content; /* Prevent the left column from growing */
+    }
+
     .number-grid {
       display: grid;
       grid-template-columns: repeat(9, 50px);
@@ -90,7 +107,6 @@
     }
 
     .user-input {
-      margin-top: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -102,7 +118,8 @@
       border: 1px solid #ff9ff3;
       border-radius: 8px;
       font-size: 16px;
-      width: 200px;
+      width: 100%;
+      max-width: 300px;
       background-color: #2e1a47;
       color: #ffccf9;
     }
@@ -117,17 +134,22 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 3D effect */
+      width: 100%;
+      max-width: 300px;
     }
 
     .user-input button:hover {
       background-color: #f368e0;
     }
 
-    /* ULTRA KAWAII TICKET LIST */
-    .ticket-list {
-      margin-top: 20px;
-      width: 100%;
-      max-width: 600px;
+    /* Right Column: Ticket List */
+    .right-column {
+      background-color: #3b2a4f; /* Darker purple */
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      overflow-y: auto; /* Allow the right column to scroll */
+      height: 100%; /* Take up full height of the container */
     }
 
     .ticket-list h2 {
@@ -145,17 +167,13 @@
     }
 
     .ticket-list li {
-      background-color: #3b2a4f; /* Darker purple */
+      background-color: #2e1a47; /* Dark purple */
       margin: 10px 0;
-      padding: 20px;
+      padding: 15px;
       border-radius: 12px;
       border-left: 5px solid #ff9ff3;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center; /* Centered content */
-      gap: 10px;
     }
 
     .ticket-list li:hover {
@@ -172,24 +190,17 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      justify-content: center; /* Centered numbers */
+      margin-top: 10px;
     }
 
     .ticket-list li .numbers span {
-      font-size: 1.2rem; /* Bigger numbers */
-      font-weight: bold; /* Bold numbers */
+      font-size: 1rem;
+      font-weight: bold;
       color: #ffffff; /* White text */
       background-color: #ff6b6b; /* Bright red */
-      padding: 8px 16px; /* Larger padding */
+      padding: 5px 10px;
       border-radius: 20px; /* Pill-shaped */
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    .ticket-list li .numbers span:hover {
-      background-color: #ff4757; /* Brighter red on hover */
-      transform: scale(1.1);
-      box-shadow: 0 4px 8px rgba(255, 71, 87, 0.4);
     }
 
     /* Result Box */
@@ -208,27 +219,12 @@
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       display: none; /* Hidden by default */
       z-index: 1000; /* Ensure it's on top */
-      animation: bounce 1s infinite; /* Bouncing animation */
-    }
-
-    .result-box.winner {
-      background-color: #4caf50; /* Green for winner */
+      background-color: #4caf50; /* Default green */
       color: #ffffff;
     }
 
     .result-box.no-winner {
-      background-color:#ff6b6b; /* Red for no winner */
-      color: #ffffff;
-    }
-
-    /* Bounce Animation */
-    @keyframes bounce {
-      0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-      }
-      50% {
-        transform: translate(-50%, -50%) scale(1.1);
-      }
+      background-color: #f44336; /* Red for no winner */
     }
 
     /* Overlay */
@@ -278,23 +274,28 @@
 <!-- Page Title -->
 <h1 class="uwu-animate">UwU Lottery System</h1>
 
-<!-- Number Grid -->
-<div class="number-grid" id="number-grid">
-  <!-- Numbers 1–45 will be generated here -->
-</div>
+<!-- Grid Container -->
+<div class="container">
+  <!-- Left Column: Lottery Number Selection -->
+  <div class="left-column">
+    <div class="number-grid" id="number-grid">
+      <!-- Numbers 1–45 will be generated here -->
+    </div>
+    <div class="user-input">
+      <input type="text" id="user_name_input" placeholder="Enter your name UwU">
+      <button onclick="addTicketToList()">Add Ticket (✿◕‿◕)</button>
+    </div>
+  </div>
 
-<!-- User Input -->
-<div class="user-input">
-  <input type="text" id="user_name_input" placeholder="Enter your name UwU">
-  <button onclick="addTicketToList()">Add Ticket (✿◕‿◕)</button>
-</div>
-
-<!-- ULTRA KAWAII TICKET LIST -->
-<div class="ticket-list">
-  <h2>Tickets UwU</h2>
-  <ul id="ticket-list">
-    <!-- Tickets will be rendered here -->
-  </ul>
+  <!-- Right Column: Ticket List -->
+  <div class="right-column">
+    <div class="ticket-list">
+      <h2>Tickets UwU (<span id="total_sold_tickets"></span> sold)</h2>
+      <ul id="ticket-list">
+        <!-- Tickets will be rendered here -->
+      </ul>
+    </div>
+  </div>
 </div>
 
 <!-- Overlay -->
