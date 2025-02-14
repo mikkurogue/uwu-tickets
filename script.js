@@ -220,7 +220,6 @@ document.addEventListener("keydown", (event) => {
 // Add a button to run the raffle
 const raffleButton = document.createElement("button");
 raffleButton.textContent = "Run Raffle";
-raffleButton.style.marginTop = "20px";
 raffleButton.style.padding = "10px 20px";
 raffleButton.style.backgroundColor = "#ff6b6b";
 raffleButton.style.color = "#ffffff";
